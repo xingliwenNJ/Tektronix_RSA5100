@@ -244,7 +244,7 @@ class RSA_GUI(wx.Frame):
         self.statusbar = self.CreateStatusBar()
         self.statusbar.SetStatusText('NO CONNECTION TO GPIB INSTRUMENT>>>ESTABLISH CONNECTION>>>')
         self.SetSize((W, H))
-        self.SetTitle('Tektronix RSA5100 Automated Control Software - Ver 1.1.1')
+        self.SetTitle('Tektronix RSA5100 Automated Control Software - Ver 1.1.2')
         self.Centre()        
         ico = wx.Icon('MESA_favicon.ico', wx.BITMAP_TYPE_ICO)
         self.SetIcon(ico)
@@ -310,11 +310,11 @@ class RSA_GUI(wx.Frame):
         stop_freq_req=0
         antenna_file = open(antenna_options[np.int(antenna_type)-1],'r')
         for line in antenna_file:
-			count=count+1
-			if count==3:
-				start_freq_req = line.strip().split(',')[0]
-			if count== num_entries:
-				stop_freq_req = line.strip().split(',')[0]
+	    count=count+1
+	    if count==3:
+	        start_freq_req = line.strip().split(',')[0]
+	    if count== num_entries:
+		stop_freq_req = line.strip().split(',')[0]
         
         if self.start_cb.GetValue()=='kHz':
             self.start_unit = 1e3
@@ -611,7 +611,73 @@ class RSA_GUI(wx.Frame):
             Params_GUI.Params_GUI(None)            
 
             self.IDN_model = IDN_model
-            
+            if self.IDN_model == 'RSA5106A':
+                self.acq_bw_options=['0.3125','0.625','1.25', '2.50', '5.00', '10.0',
+                                     '20.0', '25.0', '30.0', '60.0', '110.0']
+            else:
+                self.acq_bw_options=['0.019531', '0.039062', '0.078125', '0.15625',
+                                     '0.3125', '0.625', '1.25', '2.50', '5.00',
+                                     '10.0', '20.0', '40.0', '80.0', '165.0']
+            self.acq_bw_cb1.Clear()
+            for item in self.acq_bw_options:
+                self.acq_bw_cb1.Append(item)
+            self.acq_bw_cb1.SetValue(self.acq_bw_options[-1])
+
+            if self.IDN_model == "RSA5106A":
+                """ RSA5106A VALUES """
+                if self.acq_bw_cb1.GetValue()=='0.3125':
+                    self.acq_length_txt.SetValue('1374.0')
+                if self.acq_bw_cb1.GetValue()=='0.625':
+                    self.acq_length_txt.SetValue('687.193')
+                if self.acq_bw_cb1.GetValue()=='1.25':
+                    self.acq_length_txt.SetValue('343.596')
+                if self.acq_bw_cb1.GetValue()=='2.50':
+                    self.acq_length_txt.SetValue('171.798')
+                if self.acq_bw_cb1.GetValue()=='5.00':
+                    self.acq_length_txt.SetValue('152.710')
+                if self.acq_bw_cb1.GetValue()=='10.0':
+                    self.acq_length_txt.SetValue('76.355')
+                if self.acq_bw_cb1.GetValue()=='20.0':
+                    self.acq_length_txt.SetValue('38.177')
+                if self.acq_bw_cb1.GetValue()=='25.0':
+                    self.acq_length_txt.SetValue('19.089')
+                if self.acq_bw_cb1.GetValue()=='30.0':
+                    self.acq_length_txt.SetValue('28.633')
+                if self.acq_bw_cb1.GetValue()=='60.0':
+                    self.acq_length_txt.SetValue('14.317')
+                if self.acq_bw_cb1.GetValue()=='110.0':
+                    self.acq_length_txt.SetValue('7.158')
+            else:
+                """ RSA5115B VALUES """
+                if self.acq_bw_cb1.GetValue()=='0.019531':
+                    self.acq_length_txt.SetValue('21990.0')
+                if self.acq_bw_cb1.GetValue()=='0.039062':
+                    self.acq_length_txt.SetValue('10995.0')
+                if self.acq_bw_cb1.GetValue()=='0.078125':
+                    self.acq_length_txt.SetValue('5498.0')
+                if self.acq_bw_cb1.GetValue()=='0.15625':
+                    self.acq_length_txt.SetValue('2749.0')
+                if self.acq_bw_cb1.GetValue()=='0.3125':
+                    self.acq_length_txt.SetValue('1374.0')
+                if self.acq_bw_cb1.GetValue()=='0.625':
+                    self.acq_length_txt.SetValue('687.193')
+                if self.acq_bw_cb1.GetValue()=='1.25':
+                    self.acq_length_txt.SetValue('343.596')
+                if self.acq_bw_cb1.GetValue()=='2.50':
+                    self.acq_length_txt.SetValue('171.798')
+                if self.acq_bw_cb1.GetValue()=='5.00':
+                    self.acq_length_txt.SetValue('152.710')
+                if self.acq_bw_cb1.GetValue()=='10.0':
+                    self.acq_length_txt.SetValue('76.355')
+                if self.acq_bw_cb1.GetValue()=='20.0':
+                    self.acq_length_txt.SetValue('38.177')        
+                if self.acq_bw_cb1.GetValue()=='40.0':
+                    self.acq_length_txt.SetValue('19.089')
+                if self.acq_bw_cb1.GetValue()=='80.0':
+                    self.acq_length_txt.SetValue('10.737')
+                if self.acq_bw_cb1.GetValue()=='165.0':
+                    self.acq_length_txt.SetValue('5.368')
+
             self.start_freq_txt.Enable(True)
             self.start_cb.Enable(True)
             self.stop_freq_txt.Enable(True)
@@ -775,7 +841,7 @@ class RSA_GUI(wx.Frame):
         info = wx.adv.AboutDialogInfo()
         info.SetIcon(wx.Icon('MESA_favicon.ico', wx.BITMAP_TYPE_ICO))
         info.SetName('Tektronix RSA5100 Automated Control Software')
-        info.SetVersion('- Ver 1.1.1')
+        info.SetVersion('- Ver 1.1.2')
         info.SetDescription(description)
         info.SetCopyright('(C) 2013-2019 Braam Otto')        
         info.SetWebSite('http://www.braamotto.com/')
